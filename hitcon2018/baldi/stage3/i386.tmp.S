@@ -1,0 +1,4 @@
+.globl  main
+
+.text
+AAAAAA
