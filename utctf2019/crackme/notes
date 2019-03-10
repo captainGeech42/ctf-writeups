@@ -1,0 +1,37 @@
+input gets xor'd with 0x27
+
+one byte gets xor'd with 8 first
+
+compare value is at 0x602230 (64 bytes)
+
+63 chars + \0
+
+stuff @ 0x602090
+stuff2 @ 0x602160
+test @ 0x602230
+
+crackme.patched
+	@ 0x400a7d, write 0x84 (changes jnz to jz)
+	echo $'\x84' | dd of=crackme.patched bs=1 seek=2685 count=1
+	^^ doesn't work, use hex fiend (look for 0F85)
+
+
+write new function to offset 8336 (bs=1 count=203)
+
+
+stuff func:
+xor each character with i + 52
+
+files:
+a.out: compiled convert.c
+convert.c: do the xor stuff with stuff and stuff2 to generate the function
+crackme: original
+crackme.patched: changed jnz to jz for ptrace call (works in gdb only)
+crackme.newfunc: replaced main with decoded function from stuff (used for static analysis in ida)
+replace.py: stick the function into the elf
+solve.py: generate (most of) the password)
+stuff.bin: binary data from stuff in .data
+stuff2.bin: binary data from stuff2 in .data
+test.bin: binary data from test in .data
+stuff.func: disassembly for decoded stuff function
+stuff_func.bin: binary (opcodes) for decoded stuff func

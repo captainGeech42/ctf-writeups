@@ -1,0 +1,70 @@
+   0x602090 <stuff>:    push   %rbp                                                                                                                                                       
+   0x602091 <stuff+1>:  mov    %rsp,%rbp                                                                                                                                                  
+   0x602094 <stuff+4>:  mov    %rdi,-0x18(%rbp)                                                                                                                                           
+   0x602098 <stuff+8>:  mov    %rsi,-0x20(%rbp)                                                                                                                                           
+   0x60209c <stuff+12>: movl   $0x0,-0x4(%rbp)                                                                                                                                            
+   0x6020a3 <stuff+19>: jmpq   0x602149 <stuff+185>                                                                                                                                       
+   0x6020a8 <stuff+24>: mov    -0x4(%rbp),%eax                                                                                                                                            
+   0x6020ab <stuff+27>: add    $0x41,%eax                                                                                                                                                 
+   0x6020ae <stuff+30>: mov    %eax,-0x10(%rbp)                                                                                                                                           
+   0x6020b1 <stuff+33>: movl   $0x20,-0xc(%rbp)                                                                                                                                           
+   0x6020b8 <stuff+40>: movl   $0x5,-0x8(%rbp)                                                                                                                                            
+   0x6020bf <stuff+47>: mov    -0xc(%rbp),%eax                                                                                                                                            
+   0x6020c2 <stuff+50>: mov    %eax,%edx                                                                                                                                                  
+   0x6020c4 <stuff+52>: shr    $0x1f,%edx                                                                                                                                                 
+   0x6020c7 <stuff+55>: add    %edx,%eax                                                                                                                                                  
+   0x6020c9 <stuff+57>: sar    %eax                                                                                                                                                       
+   0x6020cb <stuff+59>: mov    %eax,%edx                                                                                                                                                  
+   0x6020cd <stuff+61>: mov    -0x8(%rbp),%eax                                                                                                                                            
+   0x6020d0 <stuff+64>: lea    (%rdx,%rax,1),%ecx                                                                                                                                         
+   0x6020d3 <stuff+67>: mov    $0x92492493,%edx                                                                                                                                           
+   0x6020d8 <stuff+72>: mov    %ecx,%eax                                                                                                                                                  
+   0x6020da <stuff+74>: imul   %edx                                                                                                                                                       
+   0x6020dc <stuff+76>: lea    (%rdx,%rcx,1),%eax                                                                                                                                         
+   0x6020df <stuff+79>: sar    $0x2,%eax                                                                                                                                                  
+   0x6020e2 <stuff+82>: mov    %eax,%edx                                                                                                                                                  
+   0x6020e4 <stuff+84>: mov    %ecx,%eax                                                                                                                                                  
+   0x6020e6 <stuff+86>: sar    $0x1f,%eax                                                                                                                                                 
+   0x6020e9 <stuff+89>: sub    %eax,%edx                                                                                                                                                  
+   0x6020eb <stuff+91>: mov    %edx,%eax                                                                                                                                                  
+   0x6020ed <stuff+93>: mov    %eax,%edx                                                                                                                                                  
+   0x6020ef <stuff+95>: shl    $0x3,%edx                                                                                                                                                  
+   0x6020f2 <stuff+98>: sub    %eax,%edx                                                                                                                                                  
+   0x6020f4 <stuff+100>:        mov    %ecx,%eax                                                                                                                                          
+   0x6020f6 <stuff+102>:        sub    %edx,%eax                                                                                                                                          
+   0x6020f8 <stuff+104>:        cmp    $0x2,%eax                                                                                                                                          
+   0x6020fb <stuff+107>:        jne    0x60210b <stuff+123>                                                                                                                               
+   0x6020fd <stuff+109>:        mov    -0x10(%rbp),%eax                                                                                                                                   
+   0x602100 <stuff+112>:        mov    -0x10(%rbp),%eax                                                                                                                                   
+   0x602103 <stuff+115>:        sub    $0x4,%eax                                                                                                                                          
+   0x602106 <stuff+118>:        mov    %eax,-0x10(%rbp)                                                                                                                                   
+   0x602109 <stuff+121>:        jmp    0x60211d <stuff+141>                                                                                                                               
+   0x60210b <stuff+123>:        mov    -0x10(%rbp),%eax                                                                                                                                   
+   0x60210e <stuff+126>:        sub    $0x41,%eax                                                                                                                                         
+   0x602111 <stuff+129>:        mov    %eax,-0x10(%rbp)                                                                                                                                   
+   0x602114 <stuff+132>:        mov    -0x10(%rbp),%eax                                                                                                                                   
+   0x602117 <stuff+135>:        add    $0x33,%eax                                                                                                                                         
+   0x60211a <stuff+138>:        mov    %eax,-0x10(%rbp)                                                                                                                                   
+   0x60211d <stuff+141>:        mov    -0x10(%rbp),%eax
+   0x602120 <stuff+144>:        mov    -0x4(%rbp),%edx
+   0x602123 <stuff+147>:        movslq %edx,%rcx
+   0x602126 <stuff+150>:        mov    -0x18(%rbp),%rdx
+   0x60212a <stuff+154>:        add    %rcx,%rdx
+   0x60212d <stuff+157>:        movzbl (%rdx),%ecx
+   0x602130 <stuff+160>:        mov    %eax,%esi
+   0x602132 <stuff+162>:        mov    -0x4(%rbp),%eax
+   0x602135 <stuff+165>:        movslq %eax,%rdx
+   0x602138 <stuff+168>:        mov    -0x18(%rbp),%rax
+   0x60213c <stuff+172>:        add    %rdx,%rax
+   0x60213f <stuff+175>:        xor    %esi,%ecx
+   0x602141 <stuff+177>:        mov    %ecx,%edx
+   0x602143 <stuff+179>:        mov    %dl,(%rax)
+   0x602145 <stuff+181>:        addl   $0x1,-0x4(%rbp)
+   0x602149 <stuff+185>:        mov    -0x4(%rbp),%eax
+   0x60214c <stuff+188>:        cltq
+   0x60214e <stuff+190>:        cmp    %rax,-0x20(%rbp)
+   0x602152 <stuff+194>:        ja     0x6020a8 <stuff+24>
+   0x602158 <stuff+200>:        nop
+   0x602159 <stuff+201>:        pop    %rbp
+   0x60215a <stuff+202>:        retq
+
