@@ -148,7 +148,7 @@ Unfortunately, all of these gadgets require a register to point to the GOT addre
 I thought about a couple different ways to exploit this, but here's how I ended up doing it:
 
 1. Overwrite `exit()` GOT address with `main()` (0x80486b1)
-  * This allows us to trigger the format string vulnerability multiple times
+    * This allows us to trigger the format string vulnerability multiple times
 2. Get a libc leak
 3. Rewrite `exit()` GOT address with `leonard_l4()` (0x804aacd)
 4. Use the format string vulnerability twice to overwrite `strncmp()` GOT with `system()`
@@ -157,7 +157,7 @@ I thought about a couple different ways to exploit this, but here's how I ended 
 
 I am 99% sure that I could have skipped the `exit()`->`main()` at first and just do `exit()`->`leonard_l4()` but I already had the leak working when I started doing this exploit path so I just left it.
 
-### `exit()` -> `main()`
+### 1. `exit()` -> `main()`
 
 First, we need to overwrite the `exit()` GOT address with the address of `main()`. Because `exit()` hasn't been resolved yet, the current value points to the PLT code used to initially resolve the symbol, so I can do a partial overwrite. I used the following format string payload:
 
@@ -173,18 +173,18 @@ First, we need to overwrite the `exit()` GOT address with the address of `main()
 
 `%6$hn`: Write 2 bytes to the address in argument 6, which is the GOT address at the beginning of the string.
 
-### libc leak
+### 2. libc leak
 
 We can leak libc by using the format string `%5$p`, which will print the 5th argument as a pointer. The 5th argument is a pointer to libc GOT, so we can subtract the offset from the libc GOT to the base address to complete our libc leak.
 
-### `exit()` -> `leonard_l4()`
+### 3. `exit()` -> `leonard_l4()`
 This is the same process as overwriting `exit()` with `main()`, just a different address:
 
 ```
 \x1c\xf0\x04\x08%43720da%6$hn
 ```
 
-### `strncmp()` -> `system()`
+### 4. `strncmp()` -> `system()`
 Now we need to overwrite `strncmp()`. Why `strncmp()`? Well, it is one of two libc functions being called in this programming where a user-specified string is the first argument (the other is `printf()`), and we are able to control when it gets executed by changing the `exit()` GOT address. By looping `leonard_l4()`, we eliminate any call to `strncmp`, which allows us to utilize the format string vulnerability twice to overwrite the GOT address. Unfortunately, we can't do this in one shot because we can only pass 20 bytes of user input to `printf()` at a time.
 
 The actual process to overwrite this is the same as the previous writes, but we do it twice, writing 2 bytes at a time: First to `system()` GOT address, and then to `system()` GOT address plus 2`
@@ -199,7 +199,7 @@ Second overwrite:
 2\xf0\x04\x08%63441da%6$hn
 ```
 
-### `exit()` -> `main()`
+### 5. `exit()` -> `main()`
 Now that `strncmp()` points to `system()`, we need to cause `main()` to be executed, which will in turn cause `strncmp()` to be triggered when the program asks for the crew member name.
 
 We do this the exact same way as before:
@@ -207,7 +207,7 @@ We do this the exact same way as before:
 \x1c\xf0\x04\x08%34476da%6$hn
 ```
 
-### `system("/bin/sh")`
+### 6. `system("/bin/sh")`
 Now, we can trigger the vulnerability and get a shell!
 ```
 ./exploit.py remote
