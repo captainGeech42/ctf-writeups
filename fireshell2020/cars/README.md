@@ -35,7 +35,7 @@ Opening the APK up in JADX, we see that `android:testOnly="true"` is present in 
 </manifest>
 ```
 
-The admins said that it was solvable without installing in an emulator to run, but I was curious and wanted to get it running. Although the APK is signed, it is possible to re-sign the APK with a modified AndroidManifest.xml to run in the emulator. This is possible with [`apktool`](https://ibotpeaches.github.io/Apktool/) and [`sign.jar`](https://github.com/appium/sign):
+The admins said that it was solvable without installing in an emulator to run, but I was curious and wanted to get it running. Although the APK is signed, it is possible to re-sign the APK with a modified AndroidManifest.xml to run in the emulator. This can be done with [`apktool`](https://ibotpeaches.github.io/Apktool/) and [`sign.jar`](https://github.com/appium/sign):
 
 ```sh
 $ apktool d cars.apk
@@ -260,7 +260,7 @@ Hmm, I wonder if we can use other `Content-Type`s? After a quick Google search, 
 
 # POSTing a comment with XML
 
-First, let's try and send a normal comment with an XML payload. After some Googling, we see that `retrofit2` uses a parent XML element as the class name, and then each parameter as a sub-element, so we construct an XMl payload like this:
+First, let's try and send a normal comment with an XML payload. After some Googling, we see that `retrofit2` uses a parent XML element as the class name, and then each parameter as a sub-element, so we construct an XML payload like this:
 
 ```xml
 <?xml  version="1.0" encoding="ISO-8859-1"?>
