@@ -5,7 +5,7 @@ import string
 f = ""
 
 id = 0x1337
-for x in range(0x10000,0x1000, -1):
+for x in range(0,0x1000):
     packet = Ether()/IP(dst="3.88.183.122",ttl=64,id=0x1234)/ICMP(type=8,code=0,id=id,seq=x)/("\x00"*48)
     ans, unans= srp(packet)
 
