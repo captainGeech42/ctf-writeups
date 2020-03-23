@@ -25,9 +25,21 @@ $ xxd flag.enc
 
 We see a lot of printable characters, but no obvious patterns.
 
-Let's do some test encryptions:
+Let's run the program, and do some test encryptions:
 
 ```
+$ ./chall
+
+_______ _____ _______  _____         _______
+|______   |   |  |  | |_____] |      |______
+______| __|__ |  |  | |       |_____ |______
+
+_______ __   _ _______  ______ __   __  _____  _______  _____   ______
+|______ | \  | |       |_____/   \_/   |_____]    |    |     | |_____/
+|______ |  \_| |_____  |    \_    |    |          |    |_____| |    \_
+
+Use: ./chall <input_file> <output_file>
+
 $ echo "aaaaqwerty" > test.in
 $ ./chall test.in test.out
 
@@ -43,7 +55,7 @@ $ xxd test.out
 00000000: 3d3d 3d3d 1d11 351b 170d eb              ====..5....
 ```
 
-We see that each `a` became `=`, so we know it's a fixed key or operation being used for each byte. With this knowledge, I wrote a scrip that would encrypt all printable characters and build a map between the character and the encrypted one, and used that to reverse the encryption done to the flag file:
+We see that each `a` became `=`, so we know it's a fixed key or operation being used for each byte. With this knowledge, I wrote a script that would encrypt all printable characters and build a map between the character and the encrypted one, and used that to reverse the encryption done to the flag file:
 
 ```py
 import string
@@ -77,6 +89,8 @@ for d in data:
 
 print(flag)
 ```
+
+When we run the script, we are greeted with the flag:
 
 ```
 $ ./solve.py
