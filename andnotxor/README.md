@@ -63,11 +63,10 @@ $
 
 This can be done using `strcpy()` and assemble it using other strings in the binary. A good target for building the string is the BSS section, because it has read/write permissions. I wrote this to the middle of the section that was just null bytes, at `0x80eb001`.
 
-I used the `search` command in pwndbg to find `/`, `bin` and `sh` in the binary:
+I used the `search` command in pwndbg to find `/`, `bin` and `sh` in the binary (manually truncated results):
 
 ```
 pwndbg> search "/"
-[snip]
 EasyROP         0x80d9a6c das     /* '/' */
 pwndbg> search "bin"
 EasyROP         0x80bc340 bound  ebp, qword ptr [ecx + 0x6e] /* 'binary' */
