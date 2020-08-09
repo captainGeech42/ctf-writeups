@@ -1,10 +1,10 @@
 # AND!XOR Badge Challenge
 
-This challenge was written by [@aagallag](https://twitter.com/aagallag) and was shared with some PDX local hacker groups by [@AndnPDXor](https://twitter.com/AndnPDXor). The first person to hack it was rewarded with a limited edition DEFCON 28: SAFE MODE AND!XOR badge! #mattdamon
+This challenge was written by [@aagallag](https://twitter.com/aagallag) and was shared with some local PDX hacker groups by [@AndnPDXor](https://twitter.com/AndnPDXor). The first person to hack it was rewarded with a limited edition DEFCON 28: SAFE MODE AND!XOR badge! #mattdamon
 
 ## The Binary
 
-The binary ([bin](EasyRop), [src](EasyRop.c)), is pretty simple, and has an obvious buffer overflow via `gets()` and `strcpy()`:
+The binary ([bin](EasyROP), [src](EasyROP.c)), is pretty simple, and has an obvious buffer overflow via `gets()` and `strcpy()`:
 
 ```c
 void function(char *str)
