@@ -6,7 +6,7 @@ _tl;dr shellcode to bypass seccomp by injecting shellcode into child process to 
 
 > This sandbox executes any shellcode you send. But thanks to seccomp, you won't be able to read /home/user/flag.
 
-For this challenge, we are given the binary, the C source code, and a Makefile (bundled in `chal.zip` in this dir).
+For this challenge, we are given the binary, the C source code, and a Makefile (bundled in [`chal.zip`](chal.zip)).
 
 ## Analyzing the binary
 
@@ -50,7 +50,7 @@ Since we were given source code, I didn't actually have to look at the binary in
  55 }
 ```
 
-If the seccomp rules aren't properly written, there's a chance you could use a 32 bit syscall (> 0x40000000) to bypass the filters ([see this writeup from RedRocket](http://blog.redrocket.club/2019/04/11/midnightsunctf-quals-2019-gissa2/). Unfortunately, the filters check to ensure the syscall number is < 0x40000000, which we can see using [`seccomp-tools`](https://github.com/david942j/seccomp-tools):
+If the seccomp rules aren't properly written, there's a chance you could use a 32 bit syscall (> 0x40000000) to bypass the filters ([see this writeup from RedRocket](http://blog.redrocket.club/2019/04/11/midnightsunctf-quals-2019-gissa2/)). Unfortunately, the filters check to ensure the syscall number is < 0x40000000, which we can see using [`seccomp-tools`](https://github.com/david942j/seccomp-tools):
 
 ```
 $ seccomp-tools dump ./chal
@@ -94,11 +94,11 @@ reading 1 bytes of shellcode. a
  0032: 0x06 0x00 0x00 0x00000000  return KILL
 ```
 
-So, at this point I know that there isn't going to be a trick to fully bypass the filters, so now I need to find a way to work with them to read the flag. We can make `open` and `write` syscalls, but we don't have `read` or `mmap`, so we can't read the flag off the file descriptor. I spent a few hours combing the man pages to try and find a trick with one of the other allowed syscalls but came up empty handed.
+At this point I know there wasn't going to be a trick to fully bypass the filters, so I needed to find a way to work with them to read the flag. We can make `open` and `write` syscalls, but we don't have `read` or `mmap`, so we can't read the flag off the file descriptor. I spent a few hours combing the man pages to try and find a trick with one of the other allowed syscalls but came up empty handed.
 
 One other interesting thing this binary does is fork a child process before applying the seccomp filters, so the filters aren't applied to the child process:
 
-```
+```c
 113 void check_flag() {
 114   while (1) {
 115     char buf[4] = "";
@@ -145,13 +145,13 @@ This lead me to two realizations:
 
 ## Writing the exploit
 
-I initially tried to do this a few differnt ways:
+I initially tried to do this a few different ways:
 
 * Write shellcode to an unused chunk of .bss, apply execute permissions with `mprotect`, and hijack the saved `rip` value from the `sleep(1)` call on L124 (this was a very dumb idea)
 * Then, I tried to overwrite a function in .text that isn't being used (since it's already marked as executable memory), and hijack the saved `rip` again (less dumb but still not very smart)
 * Finally, I overwrote the beginning of the `while (1)` loop on L114 to take advantage of the existing control flow for shellcode execution (good enough; detailed below)
 
-Another syscall that was crucial for writing this exploit is `lseek`. If you are unfamiliar, `lseek` allows you to move the cursor for a file to an arbitrary position. In this case, since we are accessing the proc/mem file (which is a special file used by the kernel to map the entire virtual memory space for a process), we need to use `lseek` to control what address we are writing to.
+Another syscall that was crucial for writing this exploit is `lseek`. In case you are unfamiliar, `lseek` allows you to move the cursor for a file to an arbitrary position. In this case, since we are accessing the proc/mem file (which is a special file used by the kernel to map the entire virtual memory space for a process), we need to use `lseek` to control which starting address to write to.
 
 With this newfound knowledge in hand, I wrote an exploit that did the following:
 
@@ -162,7 +162,7 @@ With this newfound knowledge in hand, I wrote an exploit that did the following:
 
 ## Step 1: `open`
 
-_Note: please don't take the following as advice on a good way to do this, use `asm()` in pwntools and your life will be much easier_
+_Note: please don't take the following as advice on a good way to do this, use [`asm()` in pwntools](https://docs.pwntools.com/en/stable/asm.html) and your life will be much easier._
 
 The goal for this first syscall is to create a file descriptor for the child proc/mem file. Unfortunately, since the PID of the child could change everytime, I needed to parse the output from the program to put in my shellcode, compile it, and then send it to open the proper file.
 
@@ -188,7 +188,7 @@ Here's a snippet from my [exploit](exploit.py) that dynamically compiles the she
  54         shellcode = f.read()
 ```
 
-In my shellcode (`[inject.S](sc/inject.S)`), I used `{}` as a format string so python could substitute the PID with the proper encoding to make it a string:
+In my shellcode ([`inject.S`](sc/inject.S)), I used `{}` as a format string so python could substitute the PID (L49 above) with the proper encoding to make it a string:
 
 ```asm
  23 // Open the child memory file
@@ -242,7 +242,7 @@ Now that we are positioned in the proper location to overwrite with our shellcod
 
 Here is the `execve("//bin/sh", 0, 0)` shellcode I used:
 
-``asm
+```asm
   7 //execve("//bin/sh", 0, 0)
   8 xor %rdx, %rdx
   9 xor %rsi, %rsi

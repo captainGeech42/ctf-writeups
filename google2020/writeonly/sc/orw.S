@@ -3,8 +3,6 @@
 .globl	main
 .type	main, @function
 
-// https://github.com/unixist/seccomp-bypass/blob/master/src/read-with-mmap.s
-
 main:
 
 // fd = open("/home/user/flag", 0)
