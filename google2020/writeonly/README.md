@@ -224,7 +224,7 @@ Now that we have a file descriptor to the child's memory, we need to figure out 
 
 ![IDA screenshot](img/ida.png)
 
-After the `sleep(1)` call returns, the program jumps back to `0x40223a`, which is the beginning of the `while (1)` loop at L113. That seems like a solid candidate to overwrite:
+After the `sleep(1)` call returns, the program jumps back to `0x40223a`, which is the beginning of the `while (1)` loop at L113. That seems like a solid candidate to overwrite(`r9` has the saved FD for the proc/mem file):
 
 ```asm
  46 // lseek(fd, 0x40223a, 0)
@@ -267,7 +267,7 @@ Now, I needed someway of putting the above shellcode payload into the full paylo
  16     print(f"mov\t${hex(b)}, %r8\npush\t%r8")
 ```
 
-The output from that script is the first section of this assembly, and the second is making the `write` syscall:
+The output from that script is the first section of this assembly, and the second is making the `write` syscall (`r9` has the saved FD for the proc/mem file):
 
 ```asm
  11 // put shellcode on the stack (len 28)
