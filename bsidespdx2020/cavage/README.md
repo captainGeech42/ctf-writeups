@@ -10,7 +10,7 @@
 > 
 > Hint: https://tools.ietf.org/id/draft-cavage-http-signatures-01.html
 
-The challenge provides a link to a website, and a link to an IEFT draft specification. Let's start by taking a look at the website:
+The challenge provides a link to a website, and a link to an IETF draft specification. Let's start by taking a look at the website:
 
 ![Screenshot of website](img/website.png)
 
@@ -63,7 +63,7 @@ It also mentions something about signing our requests. At this point, reading th
 
 A Cavage HTTP Signature is a signed hash that represents the values of some/all of the headers in an HTTP request. It becomes especially powerful when used in combination with the `Digest` header (which adds a hash for the HTTP body to the headers), so you can effectively sign the contents of the request/response that is being made.
 
-Here is how the signature is generated (this is the short version, for the full explanation, review the IEFT page and/or my [solution script](solve.py)):
+Here is how the signature is generated (this is the short version, for the full explanation, review the IETF page and/or my [solution script](solve.py)):
 
 1. Register your public key with the server (the mechanism for doing this is out of scope for the draft, but the key must have an associated `keyId` value)
 2. Identify which headers need to be signed for the request. By default, only the `Date` header is signed.
@@ -170,7 +170,7 @@ When you make a `GET /logs` request, you'll get tens of thousands of log entries
 2020/10/25 02:47:40 GET         web300-server.bsidespdxctf:1337/flagp5          /flagp5         10.244.1.153:41660              199.632µs               map[Accept-Encoding:[gzip] Authorization:[Signature keyId="admin",algorithm="rsa-sha256",headers="(request-target) host date content-type expire",signature="d43iAqPO7ekrfDlb6Xb7tlRd8sPAgT8dsqv7qMfd+aNp95bQhun94+F9sVLsJ8IjKqKMVn1Jn61BQRA/sFfizW5K6Gwp/zPUNuaFWhLTdqWdTGT1ujs9aBO8ZCgkWqcuIh9Co/b2mzxyNElLtSsH57bH3RDcGT6CCRRLzSVna1WfYYk7TXoOtaJySwWsA48yfkR4iHozthVXDAiEeULTL81z/KL7EWsQnEVSgHefmUt+q5pqJ+7B6OkXl0cu8RvUI3xm2nmmVIkayqJcSPygwG8bYSJnDOY1kofZAIKUh4KuqZi0cZk2JmrMDZ0TvvAD1/AuvSZtXgTMSCt5TgI3Hw=="] Date:[2020-10-25 02:47:40.340885309 +0000 UTC m=+4205.085915806] Expire:[2020-10-25 02:48:40.340885309 +0000 UTC m=+4265.085915806] Host:[web300-server.bsidespdxctf:1337] User-Agent:[yolo]]
 ```
 
-There are entries for `/flagp1`, `/flagp2`, etc., up to `/flagp5`. If you download the log a minute later, you'll see new entries in the log for the same URIs, for with different signatures. Let's break down this log entry:
+There are entries for `/flagp1`, `/flagp2`, etc., up to `/flagp5`. If you download the log a minute later, you'll see new entries in the log for the same URIs, but with different signatures. Let's break down this log entry:
 
 * The log timestamp is `2020/10/25 02:47:40`
 * The hostname is different than what we were given at the beginning: `web300-server.bsidespdxctf:1337`
