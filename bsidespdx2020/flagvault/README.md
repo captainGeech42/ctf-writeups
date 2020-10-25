@@ -48,7 +48,7 @@ public class VaultManager {
 }
 ```
 
-The `CheckPassword()` function has a long lists of constraints that must be met by the input, and if it's successful `MainActivity` will call the `DecryptFlag()` function, which goes to AES to decrypt the Base64 value in `cipherText`. Now let's take a look at the AES class:
+The `CheckPassword()` function has a long lists of constraints that must be met by the input, and if it's successful `MainActivity` will call the `DecryptFlag()` function, which goes to `AES` to decrypt the Base64 value in `cipherText`. Now let's take a look at the `AES` class:
 
 ```java
 public class AES {
