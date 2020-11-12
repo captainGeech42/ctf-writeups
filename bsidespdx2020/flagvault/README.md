@@ -103,9 +103,9 @@ After completing this reversing, we know the following:
 
 * The user input is compared to a long list of constraints in `VaultManager`. If the input passes all of the checks, it will be used as a key for decryption.
 * The AES-ECB key is the SHA-1 hash of the user input
-* The ciphertext is a Base64 blog in `VaultManager`
+* The ciphertext is a Base64 blob in `VaultManager`
 
-There is just one large question left: How can we figure out what string fits the long list of constraints in `VaultManager`? Enter Z3.
+There is just one large question left: How can we figure out what string fits the long list of constraints in `VaultManager`? Enter, Z3.
 
 [Z3](https://github.com/Z3Prover/z3) is a SMT (Satisfiability Modulo Theories) solver that provides a powerful interface to solve large systems of equations. We can use Z3 to represent all of the constraints as a series of equations, and allow it to do the hard work of figuring out what input will succeed. I won't be going in depth on how to use Z3 in this writeup, but there is a great guide that I reference when using Z3 [here](https://ericpony.github.io/z3py-tutorial/guide-examples.htm).
 
