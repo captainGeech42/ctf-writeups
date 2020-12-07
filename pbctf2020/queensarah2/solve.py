@@ -45,7 +45,7 @@ for i in range(len(ALPHABET)):
 
 log.info("got double sbox, aa => " + double_sbox["aa"])
 
-##### LANCE MAGIC SAGE CODE #####
+##### MAGIC SAGE CODE FROM TEAMMATE #####
 # if num possibility > 10k, retry
 log.info("computing square roots")
 p_sq = []
